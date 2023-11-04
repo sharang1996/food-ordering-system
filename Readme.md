@@ -2,7 +2,8 @@
 An application built using the principles of hexagonal architecture and domain driven design
 
 ## Dependency Graph
-![dependency-graph](https://github.com/sharang1996/food-ordering-system/assets/15714187/6d3cffe8-4dc1-48ab-a10d-08975dfc0002)
+![dependency-graph](https://github.com/sharang1996/food-ordering-system/assets/15714187/69be8f79-1b2a-49f2-ad13-9b4223d108fc)
+
 
 
 
