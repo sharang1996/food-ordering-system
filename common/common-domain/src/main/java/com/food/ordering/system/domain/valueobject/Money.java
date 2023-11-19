@@ -12,15 +12,18 @@ public class Money {
         if (amount == null) {
             throw new NullPointerException("Amount cannot be null");
         }
+        if (amount.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Amount cannot be negative");
+        }
         this.amount = amount;
     }
 
     public boolean isGreaterThanZero(){
-        return this.amount != null && this.amount.compareTo(BigDecimal.ZERO) > 0;
+        return this.amount.compareTo(BigDecimal.ZERO) > 0;
     }
 
     public boolean isGreaterThan(Money otherMoney){
-        return this.amount != null && this.amount.compareTo(otherMoney.getAmount()) > 0;
+        return this.amount.compareTo(otherMoney.getAmount()) > 0;
     }
 
     public Money add(Money otherMoney){
