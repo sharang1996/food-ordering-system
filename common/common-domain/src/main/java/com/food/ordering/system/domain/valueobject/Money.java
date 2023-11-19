@@ -9,8 +9,10 @@ public class Money {
     private final BigDecimal amount;
 
     public Money(BigDecimal amount) {
+        if (amount == null) {
+            throw new NullPointerException("Amount cannot be null");
+        }
         this.amount = amount;
-        //ToDo: potentially validate the constructor parameter
     }
 
     public boolean isGreaterThanZero(){
