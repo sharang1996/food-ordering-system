@@ -16,6 +16,7 @@
     </properties>
 
     <dependencies>
+        <!--Typically the domain should have no dependency, but some common entities will be shared-->
         <dependency>
             <groupId>com.food.ordering.system</groupId>
             <artifactId>common-domain</artifactId>
