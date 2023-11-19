@@ -35,6 +35,50 @@ public class Order extends AggregateRoot<OrderId> {
         validateItemsPriceSumMatchesTotal();
     }
 
+    public void pay(){
+        if(orderStatus != OrderStatus.PENDING){
+            throw new OrderDomainException("Order is not in correct state for pay operation, current state: " + orderStatus);
+        }
+        //ToDo: send event to payment service to initiate payment
+        orderStatus = OrderStatus.PAID;
+    }
+
+    public void approve(){
+        if(orderStatus != OrderStatus.PAID){
+            throw new OrderDomainException("Order is not in correct state for approve operation, current state: " + orderStatus);
+        }
+        //ToDo: send event to restaurant service to check for approval
+        orderStatus = OrderStatus.APPROVED;
+    }
+
+    public void initCancel(List<String> failureMessages){
+        //ToDo: call this method on restaurant cancelled event from restaurant service
+        if(orderStatus != OrderStatus.PAID){
+            throw new OrderDomainException("Order is not in correct state for initCancel operation, current state: " + orderStatus);
+        }
+        //ToDo: send an event to the payment service to cancel the payment
+        orderStatus = OrderStatus.CANCELLING;
+        updateFailureMessages(failureMessages);
+    }
+
+    public void cancel(List<String> failureMessages){
+        //ToDo: call this method on payment cancelled event from payment service
+        if(!(orderStatus == OrderStatus.PENDING || orderStatus == OrderStatus.CANCELLING)){
+            throw new OrderDomainException("Order is not in correct state for cancel operation, current state: " + orderStatus);
+        }
+        orderStatus = OrderStatus.CANCELLED;
+        updateFailureMessages(failureMessages);
+    }
+
+    private void updateFailureMessages(List<String> failureMessages) {
+        if(this.failureMessages != null && failureMessages != null){
+            this.failureMessages.addAll(failureMessages.stream().filter(message->!message.isEmpty()).toList());
+        }
+        if(this.failureMessages == null){
+            this.failureMessages = failureMessages;
+        }
+    }
+
     private void validateInitialOrder() {
         if(orderStatus != null || getId() != null){
             throw new OrderDomainException("Order is not in the correct state for initialization");
